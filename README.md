@@ -1,1 +1,1 @@
-# Django-hiking
+#Hi-king
