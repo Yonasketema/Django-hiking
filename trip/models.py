@@ -63,6 +63,7 @@ class Booking(models.Model):
                              on_delete=models.CASCADE)
     trip = models.ForeignKey(
         Trip, on_delete=models.CASCADE, null=True, blank=True)
+    start_date = models.DateField(null=True)
     weekly_hike = models.ForeignKey(
         WeeklyHike, on_delete=models.CASCADE, null=True, blank=True)
     payment_status = models.CharField(

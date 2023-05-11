@@ -1,8 +1,10 @@
-from django.urls import path
-
 from . import views
+from django.urls import path
+from rest_framework.routers import DefaultRouter
+
+router = DefaultRouter()
+router.register('trips', views.TripViewSet)
+router.register('booking', views.BooingViewSet)
 
 
-urlpatterns = [
-    path('', views.get_trip),
-]
+urlpatterns = router.urls

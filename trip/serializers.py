@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Trip, Book
+from .models import Trip, Booking
 
 
 class TripSerializer(serializers.ModelSerializer):
@@ -8,7 +8,7 @@ class TripSerializer(serializers.ModelSerializer):
         fields = ['id', 'title', 'price']
 
 
-class BookSerializer(serializers.ModelSerializer):
+class BookingSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Book
+        model = Booking
         fields = '__all__'
