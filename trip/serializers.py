@@ -9,11 +9,13 @@ class TripSerializer(serializers.ModelSerializer):
 
 
 class BookingSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = TripBooking
-        fields = ['id', 'user',
+        fields = ['id',
                   'number_of_people', 'start_date', 'total_price']
 
     def create(self, validated_data):
         trip_id = self.context['trip_id']
-        return TripBooking.objects.create(trip_id=trip_id, **validated_data)
+        user_id = self.context['user_id']
+        return TripBooking.objects.create(trip_id=trip_id, user=user_id, **validated_data)
