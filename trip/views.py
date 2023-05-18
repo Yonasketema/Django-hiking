@@ -19,3 +19,11 @@ class TripBookingViewSet(ModelViewSet):
 
     def get_serializer_context(self):
         return {'trip_id':  self.kwargs['trip_pk'], 'user_id': self.request.user, 'request': self.request}
+
+
+@api_view()
+@permission_classes([IsAuthenticated])
+def mytrip(resquest):
+    mytrip = TripBooking.objects.filter(user=resquest.user)
+    serializer = BookingSerializer(mytrip, many=True)
+    return Response(serializer.data)
