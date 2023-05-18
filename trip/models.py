@@ -15,11 +15,17 @@ class GuideProfile(models.Model):
     description = models.TextField()
     image_uri = models.CharField(max_length=255)
 
+    def __str__(self) -> str:
+        return self.user.username
+
 
 class Location(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField()
     categories = models.ManyToManyField(Category)
+
+    def __str__(self) -> str:
+        return self.name
 
 
 class Trip(models.Model):
@@ -47,6 +53,10 @@ class WeeklyHike(models.Model):
     guide = models.ForeignKey(GuideProfile, on_delete=models.CASCADE)
     image_uri = models.CharField(max_length=255)
 
+    def __str__(self) -> str:
+
+        return self.title
+
 
 class Booking(models.Model):
     PAYMENT_STATUS_PENDING = 'P'
@@ -61,11 +71,6 @@ class Booking(models.Model):
 
     user = models.ForeignKey(settings.AUTH_USER_MODEL,
                              on_delete=models.CASCADE)
-    trip = models.ForeignKey(
-        Trip, on_delete=models.CASCADE, null=True, blank=True)
-    start_date = models.DateField(null=True)
-    weekly_hike = models.ForeignKey(
-        WeeklyHike, on_delete=models.CASCADE, null=True, blank=True)
     payment_status = models.CharField(
         max_length=1, choices=PAYMENT_STATUS_CHOICES, default=PAYMENT_STATUS_PENDING)
     booking_date = models.DateField(auto_now_add=True)
@@ -73,8 +78,19 @@ class Booking(models.Model):
     total_price = models.DecimalField(max_digits=10, decimal_places=2)
 
     class Meta:
-        unique_together = (("user", "trip"), ("user", "weekly_hike"))
+        abstract = True
+
+
+class TripBooking(Booking):
+    trip = models.ForeignKey(Trip, on_delete=models.CASCADE)
+    start_date = models.DateField(null=False)
 
     def __str__(self) -> str:
+        return self.trip.title
 
-        return f'{self.user.username}'
+
+class HikingBooking(Booking):
+    weekly_hike = models.ForeignKey(WeeklyHike, on_delete=models.CASCADE)
+
+    def __str__(self) -> str:
+        return self.weekly_hike.title
